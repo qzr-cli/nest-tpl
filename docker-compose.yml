@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  mongo:
+    container_name: mongodb
+    image: mongo
+    restart: 'always'
+    volumes:
+      - ./mongo:/data
+    environment:
+      - TZ=Asia/Shanghai
+  app:
+    container_name: app
+    build: ./blog-egg
+    ports:
+      - 7001:7001
+    volumes:
+      - ./blog-egg:/app
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    expose:
+      - "7001"
